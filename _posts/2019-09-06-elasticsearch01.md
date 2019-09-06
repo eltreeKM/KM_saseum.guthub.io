@@ -1,8 +1,9 @@
 ---
 layout: post
-title: 엘라스틱서치 설치 & 환경설정
-subtitle: 클러스터와 노드 설정
+title: Elasticsearch Install & configuration
+subtitle: How to build cluter
 tags: [elasticsearch], [configuration]
 comments: true
 ---
 testingtesting
+한글 왜 안돼
