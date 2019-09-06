@@ -6,7 +6,7 @@ tags: [elasticsearch, configuration]
 comments: true
 ---
 
-물리서버 3대에 엘라스틱서치 클러스터를 구성할 일이 
+물리서버 3대에 엘라스틱서치 클러스터를 구성할 일이 생김
 
 구성하면서 생긴 오류와 그 해결법
 
@@ -36,7 +36,7 @@ yum 으로 설치해도 되지만 회사에서 권장하지 않아 filezilla를 
 **오류와 해결**
 
 
-1.Exception java.lang.RuntimeException: max file descriptors [65535] for elasticsearch process likely too low, increase to at least [65536] 오류
+1. Exception java.lang.RuntimeException: max file descriptors [65535] for elasticsearch process likely too low, increase to at least [65536] 오류
 클러스터를 사용하기 위해선 리소스 사용에 대한 제한을 풀어줘야하기 떄문에 생기는 오류
 ~~~
 unlimit -Sa
@@ -60,7 +60,7 @@ elasticsearch soft nproc 65536
 
 서버를 reboot 해준다
 
-2.max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+2. max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
 
 프로세스가 가질 수 있는 메모리 맵의 수를 늘려야 한다는 오류
 root 권한을 획득 한 후 아래 커맨드 입력
@@ -72,7 +72,7 @@ sysctl -w vm.max_map_count=262144
 ~~~
 
 
-3.포트 개방 
+3. 포트 개방 
 
 포트 설정을 건드리지 않고 실행을 하게 되면 유저가 접근하기 위한 http port는 9200, 노드끼리 통신하기 위해 사용되는 transport port는 9300으로 설정됨
 서버끼리 통신하기 위해선 마스터서버의 transport port인 9300번을 개방해야함, 개방하지 않고 엘라스틱서치를 실행 시 각 서버에 test-cluster라는 이름의 
@@ -100,7 +100,7 @@ vi /etc/sysconfig/iptables
 service iptables restart
 ~~~
 
-4.elasticsearch.yml - master
+4. elasticsearch.yml - master
 ~~~
 vi config/elasticsearch.yml
 
@@ -128,7 +128,7 @@ xpack.monitoring.collection.enabled: true
 - cluster.initial_master_nodes => 엘라스틱서치 실행 시 반드시 실행되고있어야 할 마스터 노드의 이름을 적는다. 
 - node.ingest: true => mornitoring 기능을 켜려면 ingest노드가 되어야 하는데 이는 더 알아보고 나중에 포스팅.
 
-5.elasticsearch.yml - data node 
+5. elasticsearch.yml - data node 
 아래 항목을 제외하곤 master와 동일하게 수정
 ~~~
 node.master: false
