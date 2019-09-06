@@ -38,14 +38,17 @@ yum 으로 설치해도 되지만 회사에서 권장하지 않아 filezilla를 
 
 1. Exception java.lang.RuntimeException: max file descriptors [65535] for elasticsearch process likely too low, increase to at least [65536] 오류
 클러스터를 사용하기 위해선 리소스 사용에 대한 제한을 풀어줘야하기 떄문에 생기는 오류
+
 ~~~
 unlimit -Sa
 ~~~
+
 커맨드로 현재 리소스 제한 현황을 확인 가능
 
 **해결**
   
 아래 config는 root 권한으로 진행
+
 ~~~
 vi /etc/security/limits.conf
 
@@ -56,6 +59,7 @@ elasticsearch soft nofile 65536
 elasticsearch hard nproc 65536
 elasticsearch soft nproc 65536
 ~~~
+
 위 코드에서 elasticsearch는 Elasticsearch를 실행하게 되는 리눅스 유저이름
 
 서버를 reboot 해준다
@@ -81,26 +85,32 @@ sysctl -w vm.max_map_count=262144
 **해결**
   
 root 권한 획득 후
+
 ~~~
 vi /etc/sysconfig/iptables
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 9300 -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 5601 -j ACCEPT #키바나를 위해 미리 열도록 하자
 ~~~
+
 위 코드를 추가해야하는데 순서가 중요하다.
+
 ~~~
 -A INPUT -j REJECT --reject-with icmp-host-prohibited
 -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 ~~~
+
 위 코드 뒤에 추가하면 열리지 않았다. 파일을 위부터 순서대로 읽어서 모든 포트를 reject한다는 명령이 먼저 이루어 져서 그런것 같음
   
 위 코드 위에 추가 해 주도록 하자.
   
 저장 후, iptables 서비스를 재시작
+
 ~~~
 service iptables restart
 ~~~
 
 4. elasticsearch.yml - master
+
 ~~~
 vi config/elasticsearch.yml
 
@@ -122,6 +132,7 @@ http.cors.enabled: true
 xpack.monitoring.enabled: true
 xpack.monitoring.collection.enabled: true
 ~~~
+
 - bootstrap.system_call_filter: false => false로 해주지 않으면seccomp를 사용하지 않는 서버에서 오류가 나게 됨
 - network.host: 0.0.0.0 => network.host로 ip를 설정하게 되면 bind_host와 publish_host 둘 다 같은 ip로 설정이 됨
 - discovery.seed_hosts => 엘라스틱서치 실행 시 다른 네트워크에 있는 노드를 검색하는 행위를 discovery라고 하며, 포트번호를 적지 않을 시 9200~9299사이의 값을 자동으로 찾아 실행되고있는 노드를 감지한다.
@@ -130,6 +141,7 @@ xpack.monitoring.collection.enabled: true
 
 5. elasticsearch.yml - data node 
 아래 항목을 제외하곤 master와 동일하게 수정
+
 ~~~
 node.master: false
 node.data: true
