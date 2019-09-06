@@ -57,7 +57,7 @@ yum 으로 설치해도 되지만 회사에서 권장하지 않아 filezilla를 
   위 코드에서 elasticsearch는 Elasticsearch를 실행하게 되는 리눅스 유저이름
   서버를 reboot 해준다
   
- 2. max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+2. max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
   프로세스가 가질 수 있는 메모리 맵의 수를 늘려야 한다는 오류
   root 권한을 획득 한 후 아래 커맨드 입력
   
@@ -76,19 +76,19 @@ yum 으로 설치해도 되지만 회사에서 권장하지 않아 filezilla를 
   root 권한 획득 후
   ~~~
   vi /etc/sysconfig/iptables
-  ~~~
-  접근 후 
-  ~~~
+
   -A INPUT -m state --state NEW -m tcp -p tcp --dport 9300 -j ACCEPT
   -A INPUT -m state --state NEW -m tcp -p tcp --dport 5601 -j ACCEPT #키바나를 위해 미리 열도록 하자
   ~~~
-  위코드를 추가해야하는데 순서가 중요함
+  위 코드를 추가해야하는데 순서가 중요함
   ~~~
   -A INPUT -j REJECT --reject-with icmp-host-prohibited
   -A FORWARD -j REJECT --reject-with icmp-host-prohibited
   ~~~
   위 코드 뒤에 추가하면 열리지 않았다. 파일을 위부터 순서대로 읽어서 모든 포트를 reject한다는 명령이 먼저 이루어 져서 그런것 같음
+  
   위 코드 위에 추가 해 주도록 하자.
+  
   저장 후, iptables 서비스를 재시작
   ~~~
   service iptables restart
