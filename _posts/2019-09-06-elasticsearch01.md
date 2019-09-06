@@ -24,7 +24,7 @@ comments: true
 * centos 6.10
 
 
-## 설치
+## 설치 & 
 
 yum 으로 설치해도 되지만 회사에서 권장하지 않아 filezilla를 이용해 직접 tar.gz를 넣는 방식으로 진행
 클러스터 이름은 test-cluster
@@ -115,7 +115,7 @@ service iptables restart
 vi config/elasticsearch.yml
 
 cluster.name: custom-dashboard
-node.name: master92
+node.name: master3
 node.master: true
 node.data: false
 node.ingest: true
@@ -149,4 +149,60 @@ node.ingest: false
 transport.port: 9301
 http.port: 9201
 ~~~
-  
+
+## 실행
+**실행은 마스터노드 -> 데이터노드 순으로실행**
+1.elastricsearch - master
+
+마스터노드 3대를 데몬으로 실행해 준다
+
+~~~
+./bin/elastisearch -d
+
+[INFO ][o.e.n.Node               ] [master1] started
+~~~
+
+위와 같은 로그가 출력되며 다른 마스터 노드를 waiting 하는 로그가 출력된다.
+다른 마스터 노드를 실행 시켰을 때 added 됐다는 로그가 기록되면 실행 성공.
+
+2.elastricsearch - data
+
+별 다를거 없이 위와 같은 방법으로 실행.
+마스터노드의 log와 데이터노드의 log둘 다 added 됐다는 로그가 기록되면 실행 성공.
+
+3.노드가 확실하게 연결됐는지 확인을 해보자
+
+~~~
+curl -XGET 'http://1.1.1.1:9300/_cat/health?v&pretty'
+~~~
+
+커맨드로 현재 1.1.1.1 서버에있는 cluster들의 상태를 확인 할 수 있다.
+
+~~~
+epoch      timestamp cluster          status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
+1567749501 05:58:21  custom-dashboard green           6         3     12   6    0    0        0             0                  -                100.0%
+~~~
+
+토탈 6개의 노드중에 3개의 노드가 데이터 노드인것을 확인 할 수 있다.
+
+노드의 상태를 확인해 보자
+
+~~~
+curl -XGET 'http://1.1.1.1:9200/_cat/nodes?v&pretty'
+
+
+ip            heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
+1.1.1.2                 26          95   0    0.01    0.05     0.01 m         -      master2
+1.1.1.3                 53          75   0    0.04    0.10     0.08 d         -      node3-1
+1.1.1.1                 21          94   0    0.00    0.00     0.00 m         *      master1
+1.1.1.1                 47          94   0    0.00    0.00     0.00 d         -      node1-1
+1.1.1.3                 16          75   0    0.04    0.10     0.08 im        -      master3
+1.1.1.2                 39          95   0    0.01    0.05     0.01 d         -      node2-1
+~~~
+
+엘라스틱서치 host ip와 이름, node.role 에선 너떤 노드인지 확인 할 수 있다.
+ 
+
+
+
+
