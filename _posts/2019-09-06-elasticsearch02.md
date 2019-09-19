@@ -114,12 +114,12 @@ index.max_result_window 세팅을 바꾸라는 에러 메시지가 출력된다
 
 다른 설정을 건드리지 않으면 10001개 이상의 결과를 뽑아내는것은 불가능 하다. 내가 조회해야 할 인덱스의 문서를 확인해 보자
 
-~~~
+```
 curl -XGET 'localhost:9200/_cat/indices?v&pretty'
 
 health status index      uuid                   pri rep docs.count docs.deleted store.size pri.store.size
 green  open   20190820   ETyYk0wLQMKiNcL4_g1GzA   1   1     108839        10000    511.8mb        255.9mb
-~~~
+```
 
 무려 108839개의 문서가 있다. 모든 문서를 조회해 보자, 스크롤은 search API를 통해 사용 할 수 있고, 아래와 같이 사용한다.
 
