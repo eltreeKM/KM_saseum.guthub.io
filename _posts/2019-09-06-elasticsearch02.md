@@ -15,4 +15,9 @@ comments: true
 
 2.scroll 이용
 
-이 중 scroll에 대해 정리 하였음 
+이 중 scroll에 대해 정리 하였음
+
+## Scroll 이란?
+
+While a search request returns a single “page” of results, the scroll API can be used to retrieve large numbers of results (or even all results) from a single search request, in much the same way as you would use a cursor on a traditional database.
+출처: https://www.elastic.co/guide/en/elasticsearch/reference/7.3/search-request-body.html#request-body-search-scroll
