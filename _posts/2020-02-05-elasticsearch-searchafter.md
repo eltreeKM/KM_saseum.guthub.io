@@ -18,6 +18,7 @@ search_after를 알아보도록 하자
 **search_after 란?**
 
 Pagination of results can be done by using the from and size but the cost becomes prohibitive when the deep pagination is reached. The index.max_result_window which defaults to 10,000 is a safeguard, search requests take heap memory and time proportional to from + size. The Scroll api is recommended for efficient deep scrolling but scroll contexts are costly and it is not recommended to use it for real time user requests. The search_after parameter circumvents this problem by providing a live cursor. The idea is to use the results from the previous page to help the retrieval of the next page.
+
 출처: https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-request-body.html#request-body-search-search-after
 
 엘라스틱서치 공식 문서에는 search_after는 from, size를 이용하는 방법과 scroll api를 이용할 떄의 리소스 낭비를 피하기 위해 라이브 커서를 제공한다고 한다.
