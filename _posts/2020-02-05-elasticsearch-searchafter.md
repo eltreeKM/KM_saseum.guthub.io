@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Elasticsearch searching
-subtitle: Search-after 
+title: Search-after
+subtitle: How to search more than 10000 docs 
 tags: [elasticsearch, search]
 comments: true
 ---
