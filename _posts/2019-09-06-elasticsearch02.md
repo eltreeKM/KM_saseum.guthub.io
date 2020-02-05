@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Bulk search with python
+title: scoll api with python
 subtitle: How to search more than 10000 docs
 tags: [elasticsearch, searching, python3]
 comments: true
