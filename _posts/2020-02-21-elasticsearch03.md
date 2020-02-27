@@ -47,3 +47,34 @@ comments: true
   ```
   log(2/1) = 0.301
   ```
+
+4. Data model
+  
+    엘라스틱서치는 수평적으로 확장 가능하며 매우 빠르다는 2가지 장점이 있다. 특히 속도 측의 장점은 데이터를 저장하는 방법에서 나온다.
+    
+    ```
+    To be or not to be, that is the question.
+    ```
+    
+    위 문장은 실제로 아래와 같이 저장된다:
+    
+    ```
+    to be or not to be that is the question
+    ```
+    
+    정규화를 거치고, 마침표가 제거되며 소문자로 변경되어 저장된다.
+    
+    만약 stop token filter를 사용하게 되면 to, be, or, not, that, is , the 와 같은 일반적인 용어(관사, 대명사 등등)이 제거되어 아래와 같이 저장된다.
+    
+    ```
+    question
+    ```
+    
+    위의 정규화 과정을 거쳐 도출된 question이 인덱싱을 위한 key로써 저장되며 다음과 같이 inverted index 구조로 저장된다.
+    
+    |terms(=key)|doc ids|
+    |:---|:---|
+    question|1
+    
+    
+    
